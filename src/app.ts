@@ -19,7 +19,7 @@ app.use('/api/v1', router);
 
 // check server health
 app.get('/', (req: Request, res: Response) => {
-  res.send('Server is running...');
+  res.send('ReCart Assignment Server is Running');
 });
 
 // global error handler

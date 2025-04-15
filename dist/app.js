@@ -27,7 +27,7 @@ app.use(
 app.use('/api/v1', routes_1.default);
 // check server health
 app.get('/', (req, res) => {
-  res.send('Server is running...');
+  res.send('ReCart Assignment Server is Running');
 });
 // global error handler
 app.use(globalErrorHandler_1.globalErrorHandler);
