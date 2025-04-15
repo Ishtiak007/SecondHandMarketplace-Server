@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import router from './app/routes';
+import { globalErrorHandler } from './app/middleware/globalErrorHandler';
 
 const app: Application = express();
 
