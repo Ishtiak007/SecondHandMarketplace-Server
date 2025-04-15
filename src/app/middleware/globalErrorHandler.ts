@@ -3,14 +3,14 @@
 
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
-import { handleZodValidationError } from '../errors/handleZodValidationError';
 import config from '../config';
 import express from 'express';
-import { TError } from '../interface/error';
 import { handleValidationError } from '../errors/handleValidationError';
 import { handleCastError } from '../errors/handleCastError';
 import { handleDuplicateError } from '../errors/handleDuplicateError';
 import { HttpError } from '../errors/HttpError';
+import { TError } from '../interface/error';
+import { handleZodValidationError } from '../errors/handleZodValidationError';
 
 export const globalErrorHandler = ((
   err: any,
