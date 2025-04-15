@@ -5,12 +5,12 @@ import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import config from '../config';
 import express from 'express';
-import { handleDuplicateError } from '../errors/handleDuplicateError';
 import { HttpError } from '../errors/HttpError';
 import { TError } from '../interface/error';
 import { handleZodValidationError } from '../errors/handleZodValidationError';
 import { handleValidationError } from '../errors/handleValidationError';
 import { handleCastError } from '../errors/handleCastError';
+import { handleDuplicateError } from '../errors/handleDuplicateError';
 
 export const globalErrorHandler = ((
   err: any,
