@@ -42,4 +42,11 @@ router.patch(
   ListingControllers.updateListingByIdController,
 );
 
+// Update listing Status by Id
+router.patch(
+  '/:id/status',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  ListingControllers.updateListingStatusByIdController,
+);
+
 export const ListingRoutes = router;

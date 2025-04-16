@@ -99,6 +99,32 @@ const updateListingByIdIntoDB = async (
   return updatedListing;
 };
 
+// updateListingStatusByIdController
+const updateListingStatusByIdIntoDB = async (
+  id: string,
+  status: string,
+  identifier: string,
+) => {
+  // check if user exists
+  const user = await User.isUserExists(identifier);
+  if (!user) throw new HttpError(404, 'User not found');
+
+  // update listing status
+  const updatedListingStatus = await Listing.findOneAndUpdate(
+    { _id: id, userID: user._id },
+    { status },
+    { runValidators: true, new: true },
+  );
+
+  if (!updatedListingStatus)
+    throw new HttpError(
+      403,
+      'You do not have permission to update this listing status',
+    );
+
+  return updatedListingStatus;
+};
+
 export const ListingServices = {
   createListingIntoDB,
   getAllListingsFromDB,
@@ -106,4 +132,5 @@ export const ListingServices = {
   getListingsByParticularUserFromDB,
   getListingByIdFromDB,
   updateListingByIdIntoDB,
+  updateListingStatusByIdIntoDB,
 };
