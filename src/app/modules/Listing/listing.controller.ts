@@ -41,8 +41,23 @@ const getListingsByCategoryController = asyncHandler(async (req, res) => {
   });
 });
 
+// Get Listing by User
+const getListingsByParticularUserController = asyncHandler(async (req, res) => {
+  const { identifier } = req.user;
+  const listings =
+    await ListingServices.getListingsByParticularUserFromDB(identifier);
+
+  sendResponse(res, {
+    success: true,
+    message: 'Particular user wise listings are retrieved successfully',
+    statusCode: 200,
+    data: listings,
+  });
+});
+
 export const ListingControllers = {
   createListingController,
   getAllListingsController,
   getListingsByCategoryController,
+  getListingsByParticularUserController,
 };

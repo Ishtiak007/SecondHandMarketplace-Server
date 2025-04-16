@@ -24,4 +24,11 @@ router.get(
   ListingControllers.getListingsByCategoryController,
 );
 
+// Get Listing by User
+router.get(
+  '/byUser',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  ListingControllers.getListingsByParticularUserController,
+);
+
 export const ListingRoutes = router;

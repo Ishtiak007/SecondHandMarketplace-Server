@@ -35,8 +35,29 @@ const getListingsByCategoryFromDB = async (category: string) => {
   return listings;
 };
 
+// Get Listings by user
+const getListingsByParticularUserFromDB = async (identifier: string) => {
+  const user = await User.isUserExists(identifier);
+  if (!user) {
+    throw new HttpError(404, 'User not found');
+  }
+
+  const listings = await Listing.find({ userID: user._id }).populate(
+    'userID',
+    '_id name identifier role',
+  );
+  if (listings.length === 0) {
+    throw new HttpError(
+      404,
+      'There are no listings in the database provide this user',
+    );
+  }
+  return listings;
+};
+
 export const ListingServices = {
   createListingIntoDB,
   getAllListingsFromDB,
   getListingsByCategoryFromDB,
+  getListingsByParticularUserFromDB,
 };
