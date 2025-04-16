@@ -31,7 +31,17 @@ const getMeFromDB = async (identifier: string) => {
   return user;
 };
 
+// Get user By ID
+const getUserByIdFromDB = async (id: string) => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new HttpError(404, 'No user found with this ID');
+  }
+  return user;
+};
+
 export const UserServices = {
   getAllUsers,
   getMeFromDB,
+  getUserByIdFromDB,
 };

@@ -15,4 +15,11 @@ router.get(
   UserControllers.getMeController,
 );
 
+// Get user By ID
+router.get(
+  '/:id',
+  auth(USER_ROLE.admin),
+  UserControllers.getUserControllerById,
+);
+
 export const UserRoutes = router;

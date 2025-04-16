@@ -27,7 +27,21 @@ const getMeController = asyncHandler(async (req, res) => {
   });
 });
 
+// Get user By ID
+const getUserControllerById = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const user = await UserServices.getUserByIdFromDB(id);
+
+  sendResponse(res, {
+    success: true,
+    message: 'User retrieved successfully',
+    statusCode: 200,
+    data: user,
+  });
+});
+
 export const UserControllers = {
   getAllUsersController,
   getMeController,
+  getUserControllerById,
 };
