@@ -74,7 +74,24 @@ const updateUserStatusByIdIntoDB = async (
   );
   if (!updatedStatus)
     throw new HttpError(404, 'There is No user found with this ID');
+  return updatedStatus;
+};
 
+// Update User role by id
+const updateUserRoleByIdIntoDB = async (
+  id: string,
+  role: string,
+  identifier: string,
+) => {
+  const user = await User.isUserExists(identifier);
+  if (!user) throw new HttpError(404, 'This user is not found');
+  const updatedStatus = await User.findOneAndUpdate(
+    { _id: id, isDeleted: false },
+    { role: role },
+    { runValidators: true, new: true },
+  );
+  if (!updatedStatus)
+    throw new HttpError(404, 'There is No user found with this ID');
   return updatedStatus;
 };
 
@@ -84,4 +101,5 @@ export const UserServices = {
   getUserByIdFromDB,
   updateUserFromDB,
   updateUserStatusByIdIntoDB,
+  updateUserRoleByIdIntoDB,
 };

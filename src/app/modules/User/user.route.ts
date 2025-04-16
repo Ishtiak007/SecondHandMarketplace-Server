@@ -36,4 +36,11 @@ router.patch(
   UserControllers.updateUserStatusByIdController,
 );
 
+// Update User role by id
+router.patch(
+  '/:id/role',
+  auth(USER_ROLE.admin),
+  UserControllers.updateUserRoleByIdController,
+);
+
 export const UserRoutes = router;
