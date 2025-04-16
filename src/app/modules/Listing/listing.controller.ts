@@ -67,10 +67,29 @@ const getListingByIdController = asyncHandler(async (req, res) => {
   });
 });
 
+// Update listing by ID
+const updateListingByIdController = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const updatedPayload = req.body;
+  const { identifier } = req.user;
+  const updatedListing = await ListingServices.updateListingByIdIntoDB(
+    id,
+    updatedPayload,
+    identifier,
+  );
+  sendResponse(res, {
+    success: true,
+    message: 'Listing is updated successfully',
+    statusCode: 200,
+    data: updatedListing,
+  });
+});
+
 export const ListingControllers = {
   createListingController,
   getAllListingsController,
   getListingsByCategoryController,
   getListingsByParticularUserController,
   getListingByIdController,
+  updateListingByIdController,
 };

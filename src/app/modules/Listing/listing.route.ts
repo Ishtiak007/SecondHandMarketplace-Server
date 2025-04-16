@@ -34,4 +34,12 @@ router.get(
 // Get listings by ID
 router.get('/:id', ListingControllers.getListingByIdController);
 
+// Update listing by ID
+router.patch(
+  '/:id',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  validateRequestSchema(ListingValidationSchema.updateListingValidationSchema),
+  ListingControllers.updateListingByIdController,
+);
+
 export const ListingRoutes = router;

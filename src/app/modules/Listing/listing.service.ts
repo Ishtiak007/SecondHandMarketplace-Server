@@ -67,10 +67,43 @@ const getListingByIdFromDB = async (id: string) => {
   return listing;
 };
 
+// Update listing by id
+const updateListingByIdIntoDB = async (
+  id: string,
+  payload: Partial<TListing>,
+  identifier: string,
+) => {
+  const userExists = await User.isUserExists(identifier);
+  if (!userExists) {
+    throw new HttpError(404, 'This user not found');
+  }
+  const user = await User.findOne({ identifier: identifier });
+  if (!user) {
+    throw new HttpError(404, 'This user not found');
+  }
+  const listing = await Listing.findOne({ _id: id, userID: user._id });
+  if (!listing) {
+    throw new HttpError(
+      403,
+      'You do not have permission to update this listing.',
+    );
+  }
+  const updatedListing = await Listing.findOneAndUpdate(
+    { _id: id, isDeleted: false },
+    payload,
+    { new: true, runValidators: true },
+  );
+  if (!updatedListing) {
+    throw new HttpError(404, 'No listing found with this ID');
+  }
+  return updatedListing;
+};
+
 export const ListingServices = {
   createListingIntoDB,
   getAllListingsFromDB,
   getListingsByCategoryFromDB,
   getListingsByParticularUserFromDB,
   getListingByIdFromDB,
+  updateListingByIdIntoDB,
 };
