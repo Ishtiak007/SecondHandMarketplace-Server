@@ -58,9 +58,30 @@ const updateUserFromDB = async (
   return updatedProfile;
 };
 
+// Update User status by id
+const updateUserStatusByIdIntoDB = async (
+  id: string,
+  status: string,
+  identifier: string,
+) => {
+  const user = await User.isUserExists(identifier);
+  if (!user) throw new HttpError(404, 'This user is not found');
+
+  const updatedStatus = await User.findOneAndUpdate(
+    { _id: id, isDeleted: false },
+    { status: status },
+    { runValidators: true, new: true },
+  );
+  if (!updatedStatus)
+    throw new HttpError(404, 'There is No user found with this ID');
+
+  return updatedStatus;
+};
+
 export const UserServices = {
   getAllUsers,
   getMeFromDB,
   getUserByIdFromDB,
   updateUserFromDB,
+  updateUserStatusByIdIntoDB,
 };

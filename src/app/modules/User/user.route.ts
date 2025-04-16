@@ -29,4 +29,11 @@ router.patch(
   UserControllers.updateUserController,
 );
 
+// Update User status by id
+router.patch(
+  '/:id/status',
+  auth(USER_ROLE.admin),
+  UserControllers.updateUserStatusByIdController,
+);
+
 export const UserRoutes = router;
