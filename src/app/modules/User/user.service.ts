@@ -2,6 +2,7 @@ import QueryBuilder from '../../builder/QueryBuilder';
 import { HttpError } from '../../errors/HttpError';
 import { User } from './user.model';
 
+// Get all users
 const getAllUsers = async (query: Record<string, unknown>) => {
   const userQuery = new QueryBuilder(User.find(), query).sortBy().paginate();
 

@@ -1,6 +1,8 @@
 import { asyncHandler } from '../../utils/global/asyncHandler';
 import { sendResponse } from '../../utils/global/sendResponse';
+import { UserServices } from './user.service';
 
+// Get all users
 const getAllUsersController = asyncHandler(async (req, res) => {
   const query = req.query;
   const users = await UserServices.getAllUsers(query);
