@@ -18,6 +18,18 @@ const createListingController = asyncHandler(async (req, res) => {
   });
 });
 
+// Get all listing
+const getAllListingsController = asyncHandler(async (req, res) => {
+  const result = await ListingServices.getAllListingsFromDB();
+  sendResponse(res, {
+    success: true,
+    message: 'Listings are retrieved successfully',
+    statusCode: 200,
+    data: result,
+  });
+});
+
 export const ListingControllers = {
   createListingController,
+  getAllListingsController,
 };

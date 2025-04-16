@@ -14,6 +14,19 @@ const createListingIntoDB = async (payload: TListing, identifier: string) => {
   return createdListing;
 };
 
+// Get all listings
+const getAllListingsFromDB = async () => {
+  const listings = await Listing.find().populate(
+    'userID',
+    '_id name identifier role',
+  );
+  if (listings.length === 0) {
+    throw new HttpError(404, 'No listings were found in the database.');
+  }
+  return listings;
+};
+
 export const ListingServices = {
   createListingIntoDB,
+  getAllListingsFromDB,
 };

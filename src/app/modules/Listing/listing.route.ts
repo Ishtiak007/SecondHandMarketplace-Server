@@ -15,4 +15,7 @@ router.post(
   ListingControllers.createListingController,
 );
 
+// Get all Listing
+router.get('/', ListingControllers.getAllListingsController);
+
 export const ListingRoutes = router;
