@@ -49,4 +49,11 @@ router.patch(
   ListingControllers.updateListingStatusByIdController,
 );
 
+// Delete listing by id
+router.delete(
+  '/:id',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  ListingControllers.deleteListingByIdController,
+);
+
 export const ListingRoutes = router;

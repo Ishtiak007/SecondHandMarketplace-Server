@@ -100,6 +100,22 @@ const updateListingStatusByIdController = asyncHandler(async (req, res) => {
   });
 });
 
+// Delete listing by id
+const deleteListingByIdController = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const { identifier } = req.user;
+  const deletedListing = await ListingServices.deleteListingByIdFromDB(
+    id,
+    identifier,
+  );
+  sendResponse(res, {
+    success: true,
+    message: 'This Listing is deleted successfully',
+    statusCode: 200,
+    data: deletedListing,
+  });
+});
+
 export const ListingControllers = {
   createListingController,
   getAllListingsController,
@@ -108,4 +124,5 @@ export const ListingControllers = {
   getListingByIdController,
   updateListingByIdController,
   updateListingStatusByIdController,
+  deleteListingByIdController,
 };

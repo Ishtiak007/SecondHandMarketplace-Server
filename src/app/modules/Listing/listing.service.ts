@@ -125,6 +125,28 @@ const updateListingStatusByIdIntoDB = async (
   return updatedListingStatus;
 };
 
+// Delete listing by id
+const deleteListingByIdFromDB = async (id: string, identifier: string) => {
+  const userExists = await User.isUserExists(identifier);
+  if (!userExists) {
+    throw new HttpError(404, 'User not found');
+  }
+  const user = await User.findOne({ identifier: identifier });
+  if (!user) {
+    throw new HttpError(404, 'User not found');
+  }
+  const listing = await Listing.findOne({ _id: id, userID: user._id });
+  if (!listing) {
+    throw new HttpError(403, 'You are not allowed to delete this listing');
+  }
+  const deletedListing = await Listing.findOneAndUpdate(
+    { _id: id },
+    { isDeleted: true },
+    { new: true },
+  );
+  return deletedListing;
+};
+
 export const ListingServices = {
   createListingIntoDB,
   getAllListingsFromDB,
@@ -133,4 +155,5 @@ export const ListingServices = {
   getListingByIdFromDB,
   updateListingByIdIntoDB,
   updateListingStatusByIdIntoDB,
+  deleteListingByIdFromDB,
 };
