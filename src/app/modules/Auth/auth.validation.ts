@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 const registerUserValidationSchema = z.object({
   body: z.object({
-    name: z.string().trim().max(50, 'User name can not exceed 50 characters'),
+    name: z
+      .string()
+      .trim()
+      .max(50, 'Please enter a username with no more than 50 characters'),
     identifier: z.string().trim(),
     password: z.string().trim(),
     role: z.enum(['user', 'admin']).default('user'),
