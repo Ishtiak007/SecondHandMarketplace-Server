@@ -29,7 +29,20 @@ const getAllListingsController = asyncHandler(async (req, res) => {
   });
 });
 
+// Get Listings By Category
+const getListingsByCategoryController = asyncHandler(async (req, res) => {
+  const category = req.params.category;
+  const listings = await ListingServices.getListingsByCategoryFromDB(category);
+  sendResponse(res, {
+    success: true,
+    message: 'Listings have been successfully retrieved by category.',
+    statusCode: 200,
+    data: listings,
+  });
+});
+
 export const ListingControllers = {
   createListingController,
   getAllListingsController,
+  getListingsByCategoryController,
 };

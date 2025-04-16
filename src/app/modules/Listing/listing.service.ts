@@ -21,7 +21,16 @@ const getAllListingsFromDB = async () => {
     '_id name identifier role',
   );
   if (listings.length === 0) {
-    throw new HttpError(404, 'No listings were found in the database.');
+    throw new HttpError(404, 'There are no listings in the database.');
+  }
+  return listings;
+};
+
+// Get Listings By Category
+const getListingsByCategoryFromDB = async (category: string) => {
+  const listings = await Listing.find({ category });
+  if (listings.length === 0) {
+    throw new HttpError(404, 'There are no listings in the database.');
   }
   return listings;
 };
@@ -29,4 +38,5 @@ const getAllListingsFromDB = async () => {
 export const ListingServices = {
   createListingIntoDB,
   getAllListingsFromDB,
+  getListingsByCategoryFromDB,
 };

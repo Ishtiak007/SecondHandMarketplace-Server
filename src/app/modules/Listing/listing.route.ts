@@ -18,4 +18,10 @@ router.post(
 // Get all Listing
 router.get('/', ListingControllers.getAllListingsController);
 
+// Get Listings By Category
+router.get(
+  '/category/:category',
+  ListingControllers.getListingsByCategoryController,
+);
+
 export const ListingRoutes = router;
