@@ -22,4 +22,11 @@ router.get(
   UserControllers.getUserControllerById,
 );
 
+// Update user profile
+router.patch(
+  '/update-profile',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  UserControllers.updateUserController,
+);
+
 export const UserRoutes = router;

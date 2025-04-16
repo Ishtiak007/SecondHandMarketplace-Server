@@ -1,5 +1,6 @@
 import QueryBuilder from '../../builder/QueryBuilder';
 import { HttpError } from '../../errors/HttpError';
+import { TUser } from './user.interface';
 import { User } from './user.model';
 
 // Get all users
@@ -40,8 +41,26 @@ const getUserByIdFromDB = async (id: string) => {
   return user;
 };
 
+// Update user profile
+const updateUserFromDB = async (
+  payload: Partial<TUser>,
+  identifier: string,
+) => {
+  const user = await User.isUserExists(identifier);
+  if (!user) {
+    throw new HttpError(404, 'This user not found');
+  }
+  const updatedProfile = await User.findOneAndUpdate(
+    { identifier: identifier },
+    payload,
+    { new: true, runValidators: true },
+  );
+  return updatedProfile;
+};
+
 export const UserServices = {
   getAllUsers,
   getMeFromDB,
   getUserByIdFromDB,
+  updateUserFromDB,
 };

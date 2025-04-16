@@ -40,8 +40,25 @@ const getUserControllerById = asyncHandler(async (req, res) => {
   });
 });
 
+// Update user profile
+const updateUserController = asyncHandler(async (req, res) => {
+  const { identifier } = req.user;
+  const updatedPayload = req.body;
+  const updatedUser = await UserServices.updateUserFromDB(
+    updatedPayload,
+    identifier,
+  );
+  sendResponse(res, {
+    success: true,
+    message: 'User profile update successfully',
+    statusCode: 200,
+    data: updatedUser,
+  });
+});
+
 export const UserControllers = {
   getAllUsersController,
   getMeController,
   getUserControllerById,
+  updateUserController,
 };
