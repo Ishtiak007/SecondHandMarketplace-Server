@@ -92,6 +92,19 @@ const updateUserRoleByIdController = asyncHandler(async (req, res) => {
   });
 });
 
+// Delete a user
+const deleteUserControllerById = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const { identifier } = req.user;
+  await UserServices.deleteUserByIdIntoDB(id, identifier);
+  sendResponse(res, {
+    success: true,
+    message: 'User deleted successfully',
+    statusCode: 200,
+    data: {},
+  });
+});
+
 export const UserControllers = {
   getAllUsersController,
   getMeController,
@@ -99,4 +112,5 @@ export const UserControllers = {
   updateUserController,
   updateUserStatusByIdController,
   updateUserRoleByIdController,
+  deleteUserControllerById,
 };

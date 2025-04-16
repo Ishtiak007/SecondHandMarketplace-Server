@@ -95,6 +95,18 @@ const updateUserRoleByIdIntoDB = async (
   return updatedStatus;
 };
 
+// Delete a user
+const deleteUserByIdIntoDB = async (id: string, identifier: string) => {
+  const user = await User.isUserExists(identifier);
+  if (!user) throw new HttpError(404, 'This user is not found');
+  const deletedUser = await User.findOneAndUpdate(
+    { _id: id },
+    { isDeleted: true },
+    { new: true },
+  );
+  return deletedUser;
+};
+
 export const UserServices = {
   getAllUsers,
   getMeFromDB,
@@ -102,4 +114,5 @@ export const UserServices = {
   updateUserFromDB,
   updateUserStatusByIdIntoDB,
   updateUserRoleByIdIntoDB,
+  deleteUserByIdIntoDB,
 };
