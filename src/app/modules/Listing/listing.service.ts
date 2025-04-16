@@ -55,9 +55,22 @@ const getListingsByParticularUserFromDB = async (identifier: string) => {
   return listings;
 };
 
+// Get listing by ID
+const getListingByIdFromDB = async (id: string) => {
+  const listing = await Listing.findById(id).populate(
+    'userID',
+    '_id name identifier role',
+  );
+  if (!listing) {
+    throw new HttpError(404, 'No listing found with this ID');
+  }
+  return listing;
+};
+
 export const ListingServices = {
   createListingIntoDB,
   getAllListingsFromDB,
   getListingsByCategoryFromDB,
   getListingsByParticularUserFromDB,
+  getListingByIdFromDB,
 };

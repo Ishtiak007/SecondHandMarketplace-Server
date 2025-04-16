@@ -31,4 +31,7 @@ router.get(
   ListingControllers.getListingsByParticularUserController,
 );
 
+// Get listings by ID
+router.get('/:id', ListingControllers.getListingByIdController);
+
 export const ListingRoutes = router;
