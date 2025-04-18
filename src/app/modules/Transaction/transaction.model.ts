@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+import { TTransaction } from './transaction.interface';
 
 const transactionSchema = new Schema<TTransaction>(
   {

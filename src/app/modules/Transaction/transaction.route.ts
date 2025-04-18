@@ -1,0 +1,19 @@
+import express from 'express';
+import { auth } from '../../middleware/auth';
+import { USER_ROLE } from '../User/user.constant';
+import { validateRequestSchema } from '../../middleware/validateRequestSchema';
+import { TransactionValidationSchema } from './transaction.validation';
+import { TransactionControllers } from './transaction.controller';
+
+const router = express.Router();
+
+router.post(
+  '/',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  validateRequestSchema(
+    TransactionValidationSchema.createTransactionValidationSchema,
+  ),
+  TransactionControllers.createTransactionController,
+);
+
+export const TransactionRoutes = router;
