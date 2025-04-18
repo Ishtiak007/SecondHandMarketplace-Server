@@ -7,6 +7,7 @@ import { TransactionControllers } from './transaction.controller';
 
 const router = express.Router();
 
+// create transaction
 router.post(
   '/',
   auth(USER_ROLE.user, USER_ROLE.admin),
@@ -14,6 +15,13 @@ router.post(
     TransactionValidationSchema.createTransactionValidationSchema,
   ),
   TransactionControllers.createTransactionController,
+);
+
+// update transaction status by id
+router.patch(
+  '/:id/status',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  TransactionControllers.updateTransactionStatusByIdController,
 );
 
 export const TransactionRoutes = router;

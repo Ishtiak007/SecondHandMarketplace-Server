@@ -8,6 +8,7 @@ import { generateTransactionId } from './transaction.utils';
 import { Transaction } from './transaction.model';
 import { SSLCommerzService } from '../SSLCommerez/sslCommerez.service';
 
+// create transaction
 const createTransactionIntoDB = async (
   payload: TTransaction,
   identifier: string,
@@ -70,6 +71,37 @@ const createTransactionIntoDB = async (
   }
 };
 
+// update transaction status by id
+const updateTransactionStatusByIdIntoDB = async (
+  id: string,
+  status: string,
+  identifier: string,
+) => {
+  const user = await User.isUserExists(identifier);
+  if (!user) {
+    throw new HttpError(404, 'User not found');
+  }
+
+  const validStatuses = ['pending', 'completed'];
+
+  if (!validStatuses.includes(status)) {
+    throw new HttpError(400, `Invalid status: ${status}`);
+  }
+
+  const updatedStatus = await Transaction.findOneAndUpdate(
+    { _id: id },
+    { status: status },
+    { new: true, runValidators: true },
+  );
+
+  if (!updatedStatus) {
+    throw new HttpError(404, 'No transaction found with ID');
+  }
+
+  return updatedStatus;
+};
+
 export const TransactionServices = {
   createTransactionIntoDB,
+  updateTransactionStatusByIdIntoDB,
 };
