@@ -44,7 +44,28 @@ const updateTransactionStatusByIdController = asyncHandler(async (req, res) => {
   });
 });
 
+// Get purchases history by particular user
+const getPurchasesHistoryByParticularUserController = asyncHandler(
+  async (req, res) => {
+    const { identifier } = req.user;
+    const query = req.query;
+    const purchasesHistory =
+      await TransactionServices.getPurchasesHistoryBySpecificUserFromDB(
+        identifier,
+        query,
+      );
+
+    sendResponse(res, {
+      success: true,
+      message: 'Purchases history are retrieved successfully',
+      statusCode: 200,
+      data: purchasesHistory,
+    });
+  },
+);
+
 export const TransactionControllers = {
   createTransactionController,
   updateTransactionStatusByIdController,
+  getPurchasesHistoryByParticularUserController,
 };

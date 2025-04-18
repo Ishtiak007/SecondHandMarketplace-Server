@@ -7,6 +7,7 @@ import { TTransaction } from './transaction.interface';
 import { generateTransactionId } from './transaction.utils';
 import { Transaction } from './transaction.model';
 import { SSLCommerzService } from '../SSLCommerez/sslCommerez.service';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 // create transaction
 const createTransactionIntoDB = async (
@@ -93,15 +94,49 @@ const updateTransactionStatusByIdIntoDB = async (
     { status: status },
     { new: true, runValidators: true },
   );
-
   if (!updatedStatus) {
     throw new HttpError(404, 'No transaction found with ID');
   }
-
   return updatedStatus;
+};
+
+// Get purchases history by particular user
+const getPurchasesHistoryBySpecificUserFromDB = async (
+  identifier: string,
+  query: Record<string, unknown>,
+) => {
+  const user = await User.isUserExists(identifier);
+  if (!user) {
+    throw new HttpError(404, 'User not found');
+  }
+  const activeListingIds = await Listing.find({ isDeleted: false }).distinct(
+    '_id',
+  );
+  const purchasesHistoryQuery = new QueryBuilder(
+    Transaction.find({ buyerID: user._id, itemID: { $in: activeListingIds } })
+      .populate('buyerID', '_id name identifier role')
+      .populate('sellerID', '_id name identifier role')
+      .populate('itemID'),
+    query,
+  )
+    .sortBy()
+    .paginate();
+
+  const meta = await purchasesHistoryQuery.countTotal();
+  const result = await purchasesHistoryQuery.modelQuery;
+
+  if (result.length === 0) {
+    throw new HttpError(404, 'No purchases history found for this user');
+  }
+
+  return {
+    meta,
+    result,
+  };
 };
 
 export const TransactionServices = {
   createTransactionIntoDB,
   updateTransactionStatusByIdIntoDB,
+  getPurchasesHistoryBySpecificUserFromDB,
 };

@@ -24,4 +24,11 @@ router.patch(
   TransactionControllers.updateTransactionStatusByIdController,
 );
 
+// Get purchases history by particular user
+router.get(
+  '/purchases-history',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  TransactionControllers.getPurchasesHistoryByParticularUserController,
+);
+
 export const TransactionRoutes = router;
