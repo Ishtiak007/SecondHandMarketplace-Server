@@ -101,7 +101,7 @@ const updateTransactionStatusByIdIntoDB = async (
 };
 
 // Get purchases history by particular user
-const getPurchasesHistoryBySpecificUserFromDB = async (
+const getPurchasesHistoryByParticularUserFromDB = async (
   identifier: string,
   query: Record<string, unknown>,
 ) => {
@@ -121,14 +121,43 @@ const getPurchasesHistoryBySpecificUserFromDB = async (
   )
     .sortBy()
     .paginate();
-
   const meta = await purchasesHistoryQuery.countTotal();
   const result = await purchasesHistoryQuery.modelQuery;
-
   if (result.length === 0) {
     throw new HttpError(404, 'No purchases history found for this user');
   }
+  return {
+    meta,
+    result,
+  };
+};
 
+// Get sales history by particular user
+const getSalesHistoryByParticularUser = async (
+  identifier: string,
+  query: Record<string, unknown>,
+) => {
+  const user = await User.isUserExists(identifier);
+  if (!user) {
+    throw new HttpError(404, 'User not found');
+  }
+  const activeListingIds = await Listing.find({ isDeleted: false }).distinct(
+    '_id',
+  );
+  const salesHistoryQuery = new QueryBuilder(
+    Transaction.find({ sellerID: user._id, itemID: { $in: activeListingIds } })
+      .populate('buyerID', '_id name identifier role')
+      .populate('sellerID', '_id name identifier role')
+      .populate('itemID'),
+    query,
+  )
+    .sortBy()
+    .paginate();
+  const meta = await salesHistoryQuery.countTotal();
+  const result = await salesHistoryQuery.modelQuery;
+  if (result.length === 0) {
+    throw new HttpError(404, 'No sales history found for this user');
+  }
   return {
     meta,
     result,
@@ -138,5 +167,6 @@ const getPurchasesHistoryBySpecificUserFromDB = async (
 export const TransactionServices = {
   createTransactionIntoDB,
   updateTransactionStatusByIdIntoDB,
-  getPurchasesHistoryBySpecificUserFromDB,
+  getPurchasesHistoryByParticularUserFromDB,
+  getSalesHistoryByParticularUser,
 };

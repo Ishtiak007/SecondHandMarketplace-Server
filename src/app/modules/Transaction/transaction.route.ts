@@ -31,4 +31,11 @@ router.get(
   TransactionControllers.getPurchasesHistoryByParticularUserController,
 );
 
+// Get sales history by particular user
+router.get(
+  '/sales-history',
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  TransactionControllers.getSalesHistoryByParticularUserController,
+);
+
 export const TransactionRoutes = router;

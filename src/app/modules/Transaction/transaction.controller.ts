@@ -50,7 +50,7 @@ const getPurchasesHistoryByParticularUserController = asyncHandler(
     const { identifier } = req.user;
     const query = req.query;
     const purchasesHistory =
-      await TransactionServices.getPurchasesHistoryBySpecificUserFromDB(
+      await TransactionServices.getPurchasesHistoryByParticularUserFromDB(
         identifier,
         query,
       );
@@ -64,8 +64,29 @@ const getPurchasesHistoryByParticularUserController = asyncHandler(
   },
 );
 
+// Get sales history by particular user
+const getSalesHistoryByParticularUserController = asyncHandler(
+  async (req, res) => {
+    const { identifier } = req.user;
+    const query = req.query;
+    const salesHistory =
+      await TransactionServices.getSalesHistoryByParticularUser(
+        identifier,
+        query,
+      );
+
+    sendResponse(res, {
+      success: true,
+      message: 'Sales history are retrieved successfully',
+      statusCode: 200,
+      data: salesHistory,
+    });
+  },
+);
+
 export const TransactionControllers = {
   createTransactionController,
   updateTransactionStatusByIdController,
   getPurchasesHistoryByParticularUserController,
+  getSalesHistoryByParticularUserController,
 };
