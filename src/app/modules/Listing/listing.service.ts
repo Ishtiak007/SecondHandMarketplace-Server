@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { UpdateQuery } from 'mongoose';
 import { HttpError } from '../../errors/HttpError';
 import { User } from '../User/user.model';
 import { TListing } from './listing.interface';
@@ -223,6 +224,30 @@ const updateListingStatusByAdminIntoDB = async (
   return updatedListingStatus;
 };
 
+// Update listing by admin
+const updateListingByAdminIntoDB = async (
+  id: any,
+  updateData: UpdateQuery<TListing> | undefined,
+  identifier: string,
+) => {
+  const user = await User.isUserExists(identifier); // Check if the admin exists
+  if (!user) throw new HttpError(404, 'User not found');
+  if (user.role !== 'admin')
+    throw new HttpError(403, 'Only admins can update listings');
+
+  const updatedListing = await Listing.findOneAndUpdate(
+    { _id: id }, // Find the listing by ID
+    updateData, // The fields to update (e.g., status, title, description, etc.)
+    { new: true, runValidators: true }, // Return the updated document and validate
+  );
+
+  if (!updatedListing) {
+    throw new HttpError(404, 'Listing not found');
+  }
+
+  return updatedListing;
+};
+
 export const ListingServices = {
   createListingIntoDB,
   getAllListingsFromDB,
@@ -234,4 +259,5 @@ export const ListingServices = {
   deleteListingByIdFromDB,
   deleteListingByAdminFromDB,
   updateListingStatusByAdminIntoDB,
+  updateListingByAdminIntoDB,
 };

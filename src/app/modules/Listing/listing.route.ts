@@ -56,12 +56,6 @@ router.delete(
   ListingControllers.deleteListingByIdController,
 );
 
-// // Delete listing by admin
-// router.delete(
-//   '/admin/:id',
-//   auth(USER_ROLE.admin),
-//   ListingControllers.deleteListingByAdmin,
-// );
 router.delete(
   '/admin/:id',
   auth(USER_ROLE.admin),
@@ -76,3 +70,11 @@ router.patch(
 );
 
 export const ListingRoutes = router;
+
+// Update listing by admin
+router.patch(
+  '/admin/:id/update',
+  auth(USER_ROLE.admin), // Only admin can perform this action
+  validateRequestSchema(ListingValidationSchema.updateListingValidationSchema),
+  ListingControllers.updateListingByAdminController,
+);

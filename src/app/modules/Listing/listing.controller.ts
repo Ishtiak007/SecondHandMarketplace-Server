@@ -163,6 +163,26 @@ const updateListingStatusByAdminController = asyncHandler(async (req, res) => {
   });
 });
 
+// Update listing by admin
+const updateListingByAdminController = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const { identifier } = req.user; // Admin's identifier (used for authorization)
+  const updateData = req.body; // The fields to be updated in the listing
+
+  const updatedListing = await ListingServices.updateListingByAdminIntoDB(
+    id,
+    updateData,
+    identifier,
+  );
+
+  sendResponse(res, {
+    success: true,
+    message: 'Listing updated successfully by Admin',
+    statusCode: 200,
+    data: updatedListing,
+  });
+});
+
 export const ListingControllers = {
   createListingController,
   getAllListingsController,
@@ -174,4 +194,5 @@ export const ListingControllers = {
   deleteListingByIdController,
   deleteListingByAdmin,
   updateListingStatusByAdminController,
+  updateListingByAdminController,
 };
