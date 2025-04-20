@@ -56,7 +56,12 @@ router.delete(
   ListingControllers.deleteListingByIdController,
 );
 
-// Delete listing by admin
+// // Delete listing by admin
+// router.delete(
+//   '/admin/:id',
+//   auth(USER_ROLE.admin),
+//   ListingControllers.deleteListingByAdmin,
+// );
 router.delete(
   '/admin/:id',
   auth(USER_ROLE.admin),

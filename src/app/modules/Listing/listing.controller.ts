@@ -116,11 +116,24 @@ const deleteListingByIdController = asyncHandler(async (req, res) => {
   });
 });
 
-// Delete listing by admin
+// // Delete listing by admin
+// const deleteListingByAdmin = asyncHandler(async (req, res) => {
+//   const id = req.params.id;
+//   const { identifier } = req.user;
+//   await ListingServices.deleteListingByAdminFromDB(id, identifier);
+//   sendResponse(res, {
+//     success: true,
+//     message: 'Listing deleted successfully by Admin',
+//     statusCode: 200,
+//     data: {},
+//   });
+// });
 const deleteListingByAdmin = asyncHandler(async (req, res) => {
   const id = req.params.id;
   const { identifier } = req.user;
+
   await ListingServices.deleteListingByAdminFromDB(id, identifier);
+
   sendResponse(res, {
     success: true,
     message: 'Listing deleted successfully by Admin',
