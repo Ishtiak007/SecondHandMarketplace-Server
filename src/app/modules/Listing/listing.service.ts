@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpError } from '../../errors/HttpError';
 import { User } from '../User/user.model';
 import { TListing } from './listing.interface';
@@ -190,6 +191,38 @@ const deleteListingByAdminFromDB = async (id: string, identifier: string) => {
   }
   return deletedListing;
 };
+
+// Update listing status in the database by admin
+const updateListingStatusByAdminIntoDB = async (
+  id: any,
+  status: any,
+  identifier: string,
+) => {
+  const user = await User.isUserExists(identifier);
+  if (!user) {
+    throw new HttpError(404, 'User not found');
+  }
+
+  if (user.role !== 'admin') {
+    throw new HttpError(
+      403,
+      'You do not have permission to update this listing status',
+    );
+  }
+
+  const updatedListingStatus = await Listing.findOneAndUpdate(
+    { _id: id },
+    { status },
+    { new: true, runValidators: true },
+  );
+
+  if (!updatedListingStatus) {
+    throw new HttpError(404, 'Listing not found');
+  }
+
+  return updatedListingStatus;
+};
+
 export const ListingServices = {
   createListingIntoDB,
   getAllListingsFromDB,
@@ -200,4 +233,5 @@ export const ListingServices = {
   updateListingStatusByIdIntoDB,
   deleteListingByIdFromDB,
   deleteListingByAdminFromDB,
+  updateListingStatusByAdminIntoDB,
 };
