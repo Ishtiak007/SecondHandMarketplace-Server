@@ -4,7 +4,7 @@
 
 This platform connects buyers and sellers of pre-owned goods, offering a seamless, secure, and sustainable marketplace. Whether you're decluttering your home, upgrading your gadgets, or searching for great deals, **SecondHand Marketplace** has something for everyone.
 
-**Live Demo**: [SecondHand Marketplace]()
+**Live Demo (Server)**: [SecondHand Marketplace](https://second-hand-marketplace-server-two.vercel.app/)
 
 ## Key Features:
 
@@ -14,8 +14,6 @@ This platform connects buyers and sellers of pre-owned goods, offering a seamles
 - **Sustainability Focused**: Join a community committed to reducing waste and supporting eco-friendly commerce.
 
 Start browsing today and find amazing deals while supporting sustainability! 🌱
-
-**Live Demo**: [SecondHand Marketplace]()
 
 ## Roles in **SecondHand Marketplace**
 
